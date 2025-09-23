@@ -10,6 +10,7 @@
 	let dashboardOpen = $state(false);
 	let shareOpen = $state(false);
 	const project = projectManager.project;
+
 	const handleClickSave = async () => {
 		const { url } = await projectManager.create($project);
 		goto(url);

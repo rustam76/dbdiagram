@@ -7,5 +7,5 @@
 </script>
 
 <Popup bind:open={$isConfirmOpen}>
-	<ConfirmContent {title} {description} {cancel} {confirm} />
+	<!-- <ConfirmContent {title} {description} {cancel} {confirm} /> -->
 </Popup>

@@ -21,6 +21,14 @@
 			<div class="h-[36px] flex items-center text-sm w-full pl-3">
 				{$user?.email}
 			</div>
+
+			<!-- link ke admin -->
+			{#if $user?.role === 'admin'}
+				<a href="/admin" class="item">	
+					Halaman	Admin
+				</a>
+			{/if}
+
 			<hr class="border-t border-gray-600" />
 			<button onclick={handleClickSignOut} role="menuitem" class="item">
 				<img src={LogoutIcon} alt="logout" class="w-6 h-6 mr-2" />

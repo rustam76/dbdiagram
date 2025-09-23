@@ -36,7 +36,9 @@ export type Member = {
 	id: string;
 	name: string;
 	email: string;
+	password?: string;
 	image: string;
+	role?: 'admin' | 'user';
 };
 
 /**

@@ -1,8 +1,12 @@
-import { PUBLIC_SENTRY_DSN } from '$env/static/public';
-import { init } from '@jill64/sentry-sveltekit-cloudflare/client';
+// Sentry temporarily disabled due to SSR compatibility issues
+// import { PUBLIC_SENTRY_DSN } from '$env/static/public';
+// import * as Sentry from '@sentry/sveltekit';
 
-const onError = init(PUBLIC_SENTRY_DSN);
+// Sentry.init({
+//	dsn: PUBLIC_SENTRY_DSN
+// });
 
-export const handleError = onError((_e, _sentryEventId) => {
+export const handleError = (error: any, event: any) => {
+	console.error('Client error:', error);
 	// Your Error Handler
-});
+};

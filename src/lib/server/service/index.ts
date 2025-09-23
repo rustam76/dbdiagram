@@ -103,7 +103,7 @@ export class Service implements IService {
     const session = await this.#getSession();
     const userId = session?.user.id;
 
-    const projectDetail = await this.#resource.getProjectDetails(id);
+    const projectDetail = await this.#resource.getProjectDetails(id, userId);
     if (!projectDetail) {
       throw fail(404, {
         message: `Can not find project ${id}. reason: Not found`,

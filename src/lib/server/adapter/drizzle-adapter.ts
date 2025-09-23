@@ -23,7 +23,7 @@ export class DrizzleAdapter implements ResourceAdapter {
 	 */
 	static fromEnv(): DrizzleAdapter {
 		const pool = new Pool({
-			connectionString: process.env.DATABASE_URL || 'postgres://postgres:postgres@127.0.0.1:5432/easy_rd',
+			connectionString: process.env.DATABASE_URL || 'postgres://postgres:123456@127.0.0.1:5432/easy_rd',
 		});
 		const db = generateDrizzle(pool);
 		return new DrizzleAdapter(db);
@@ -35,26 +35,25 @@ export class DrizzleAdapter implements ResourceAdapter {
 	async registerUser(user: {
 		id: string;
 		email: string;
-		name: string;
-		image: string;
+		password?: string;
 	}): Promise<Member> {
 		const [result] = await this.db
 			.insert(member)
 			.values({
 				id: user.id,
 				email: user.email,
-				meta: {
-					name: user.name,
-					image: user.image
-				}
+				name: 'User',
+				image: 'https://placehold.co/150',
+				password: user.password,
 			})
 			.returning();
 
 		return {
 			id: result.id,
 			email: result.email,
-			name: result.meta.name,
-			image: result.meta.image
+			name: 'User',
+			image: 'https://placehold.co/150',
+			role: result.role || 'user'
 		};
 	}
 
@@ -75,8 +74,53 @@ export class DrizzleAdapter implements ResourceAdapter {
 		return {
 			id: result.id,
 			email: result.email,
-			name: result.meta.name,
-			image: result.meta.image
+			name: result.name || 'User',
+			image: result.image || 'https://placehold.co/150',
+			role: result.role || 'user'
+		};
+	}
+
+	async registerUserWithPassword(user: {
+		id: string;
+		email: string;
+		password: string;
+	}): Promise<Member> {
+		const [result] = await this.db
+			.insert(member)
+			.values({
+				id: user.id,
+				email: user.email,
+				password: user.password,
+				name: 'User',
+				image: 'https://placehold.co/150'
+			})
+			.returning();
+
+		return {
+			id: result.id,
+			email: result.email,
+			name: 'User',
+			image: 'https://placehold.co/150',
+			role: result.role || 'user'
+		};
+	}
+
+	async getUserByEmail(email: string): Promise<(Member & { password?: string }) | null> {
+		const [result] = await this.db
+			.select()
+			.from(member)
+			.where(eq(member.email, email))
+			.limit(1);
+
+		if (!result) return null;
+
+		return {
+			id: result.id,
+			email: result.email,
+			name: result.name || 'User',
+			image: result.image || 'https://placehold.co/150',
+			password: result.password,
+			role: result.role || 'user'
 		};
 	}
 
@@ -164,7 +208,7 @@ export class DrizzleAdapter implements ResourceAdapter {
 		};
 	}
 
-	async getProjectDetails(projectId: string): Promise<ProjectDetail | null> {
+	async getProjectDetails(projectId: string, userId?: string): Promise<ProjectDetail | null> {
 		const projectResult = await this.db
 			.select({
 				project: project,
@@ -188,16 +232,37 @@ export class DrizzleAdapter implements ResourceAdapter {
 			? 'view'
 			: 'view';
 
+		// Get user permissions if userId is provided
+		let userPermission = {
+			canView: p.meta.canView ?? true,
+			canEdit: p.meta.canEdit ?? false,
+			canInvite: false
+		};
+		let isOwner = false;
+
+		if (userId) {
+			const [memberPermission] = await this.db
+				.select({ permission: projectMember.permission })
+				.from(projectMember)
+				.where(and(eq(projectMember.projectId, projectId), eq(projectMember.memberId, userId)))
+				.limit(1);
+
+			if (memberPermission) {
+				isOwner = memberPermission.permission.isOwner ?? false;
+				userPermission = {
+					canView: memberPermission.permission.canView ?? true,
+					canEdit: memberPermission.permission.canEdit ?? false,
+					canInvite: memberPermission.permission.canInvite ?? false
+				};
+			}
+		}
+
 		return {
 			id: p.id,
 			name: p.name,
 			publicPermission,
-			permission: {
-				canView: p.meta.canView ?? true,
-				canEdit: p.meta.canEdit ?? false,
-				canInvite: false
-			},
-			isOwner: false,
+			permission: userPermission,
+			isOwner,
 			createdAt: p.createdAt,
 			updatedAt: p.updatedAt,
 			url: `/workspace/${p.id}`,
@@ -410,8 +475,8 @@ export class DrizzleAdapter implements ResourceAdapter {
 			return {
 				id: m.id,
 				email: m.email,
-				name: m.meta.name,
-				image: m.meta.image,
+				name: m.name || 'User',
+				image: m.image || 'https://placehold.co/150',
 				permission: permissionLevel,
 				isOwner: permission.isOwner
 			};

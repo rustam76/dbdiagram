@@ -18,10 +18,9 @@
 </script>
 
 <svelte:head>
-	<link rel="stylesheet" type="text/css" href="https://static.llami.net/widget-v1.css" />
+	
 	<script type="module">
-		import { initialize, run } from 'https://static.llami.net/widget-v1.js';
-		run('0a413da7-2c63-48be-b129-1a05b34c8388');
+		
 	</script>
 </svelte:head>
 
@@ -32,7 +31,7 @@
 	description={$page.data.seo.description}
 	openGraph={{
 		url: $page.data.seo.url,
-		siteName: 'Easy-RD',
+		siteName: 'DB Diagram',
 		type: 'website',
 		images: $page.data.seo.images
 	}}

@@ -13,3 +13,4 @@ vite.config.ts.timestamp-*
 build-storybook.log
 /storybook-static
 .env
+/mi

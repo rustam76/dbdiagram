@@ -13,5 +13,10 @@ export default defineConfig(({ mode }) => ({
 		sveltekit()
 	].filter(Boolean),
 	resolve: { alias: { $lib: '/src/lib' } },
-	ssr: { noExternal: ['@jill64/sentry-sveltekit-cloudflare'] }
+	ssr: { 
+		noExternal: ['@sentry/sveltekit']
+	},
+	optimizeDeps: {
+		include: ['@sentry/sveltekit']
+	}
 }));

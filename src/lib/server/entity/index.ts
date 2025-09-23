@@ -1,15 +1,17 @@
 import type { ProjectModel as ProjectModel } from '$lib/dbml';
 import { sql, type InferInsertModel, type InferSelectModel } from 'drizzle-orm';
-import { pgTable, text, timestamp, boolean, jsonb } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp, boolean, jsonb, pgEnum } from 'drizzle-orm/pg-core';
 
-type MemberMeta = {
-	name: string;
-	image: string;
-};
+// Define role enum
+export const roleEnum = pgEnum('role', ['admin', 'user']);
+
 export const member = pgTable('member', {
 	id: text('id').primaryKey(),
 	email: text('email').notNull(),
-	meta: jsonb('meta').$type<MemberMeta>().notNull(),
+	password: text('password'),
+	name: text('name'),
+	image: text('image'),
+	role: roleEnum('role').notNull().default('user'),
 	createdAt: timestamp('created_at')
 		.notNull()
 		.defaultNow(),
@@ -67,3 +69,18 @@ export const resource = pgTable('resource', {
 
 export type Resource = InferSelectModel<typeof resource>;
 export type CreateResource = InferInsertModel<typeof resource>;
+
+// System Settings table
+export const systemSettings = pgTable('system_settings', {
+	id: text('id').primaryKey().default('default'),
+	registrationEnabled: boolean('registration_enabled').notNull().default(false),
+	createdAt: timestamp('created_at')
+		.notNull()
+		.defaultNow(),
+	updatedAt: timestamp('updated_at')
+		.notNull()
+		.defaultNow()
+});
+
+export type SystemSettings = InferSelectModel<typeof systemSettings>;
+export type CreateSystemSettings = InferInsertModel<typeof systemSettings>;

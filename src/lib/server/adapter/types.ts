@@ -22,6 +22,7 @@ export interface ResourceAdapter {
 	registerUser(user: {
 		id: string;
 		email: string;
+		password: string;
 		name: string;
 		image: string;
 	}): Promise<Member>;
@@ -62,7 +63,7 @@ export interface ResourceAdapter {
 	/**
 	 * Get detailed project information including code and collaborators
 	 */
-	getProjectDetails(projectId: string): Promise<ProjectDetail | null>;
+	getProjectDetails(projectId: string, userId?: string): Promise<ProjectDetail | null>;
 	
 	/**
 	 * Update project properties
