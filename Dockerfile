@@ -1,6 +1,8 @@
 # Multi-stage build for SvelteKit application
 
-# Build stage
+# ================================
+# 1. Build stage
+# ================================
 FROM node:20.19.2-alpine AS builder
 
 # Set working directory
@@ -9,7 +11,7 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
+# Install all dependencies (including dev)
 RUN npm ci --only=production=false
 
 # Copy source code
@@ -18,15 +20,18 @@ COPY . .
 # Build the application
 RUN npm run build
 
-# Production stage
+
+# ================================
+# 2. Production stage
+# ================================
 FROM node:20.19.2-alpine AS production
 
 # Install dumb-init for proper signal handling
 RUN apk add --no-cache dumb-init
 
 # Create app user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S sveltekit -u 1001
+RUN addgroup -g 1001 -S nodejs \
+    && adduser -S sveltekit -u 1001
 
 # Set working directory
 WORKDIR /app
@@ -34,13 +39,18 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm ci --only=production && npm cache clean --force
+# Disable husky (git hooks not needed in production)
+ENV HUSKY=0
+
+# Install only production dependencies (skip postinstall/prepare)
+RUN npm ci --only=production --ignore-scripts \
+    && npm cache clean --force
 
 # Copy built application from builder stage
 COPY --from=builder --chown=sveltekit:nodejs /app/build ./build
 COPY --from=builder --chown=sveltekit:nodejs /app/package.json ./package.json
 COPY --from=builder --chown=sveltekit:nodejs /app/migrations ./migrations
+COPY --from=builder --chown=sveltekit:nodejs /app/static ./static
 
 # Switch to non-root user
 USER sveltekit
