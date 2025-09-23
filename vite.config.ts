@@ -21,5 +21,6 @@ export default defineConfig(({ mode }) => ({
 	},
 	optimizeDeps: {
 		include: ['@sentry/sveltekit','monaco-editor']
-	}
+	},
+	assetsInclude: ['**/*.css']
 }));
