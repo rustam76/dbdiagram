@@ -1,7 +1,7 @@
 import { sentryVitePlugin } from '@sentry/vite-plugin';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-
+import monacoEditorPlugin from 'vite-plugin-monaco-editor';
 export default defineConfig(({ mode }) => ({
 	plugins: [
 		mode === 'production' &&
@@ -10,7 +10,10 @@ export default defineConfig(({ mode }) => ({
 				project: 'easyrd-web',
 				authToken: process.env.SENTRY_AUTH_TOKEN
 			}),
-		sveltekit()
+		sveltekit(),
+		monacoEditorPlugin({
+			languageWorkers: ['typescript', 'css', 'html', 'json']
+		})
 	].filter(Boolean),
 	resolve: { alias: { $lib: '/src/lib' } },
 	ssr: { 
