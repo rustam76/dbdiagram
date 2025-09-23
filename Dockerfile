@@ -16,6 +16,7 @@ RUN npm ci --only=production=false
 COPY . .
 
 # Build dengan tambahan memory limit (4GB)
+RUN npx svelte-kit sync
 RUN NODE_OPTIONS="--max-old-space-size=4096" npm run build
 
 
