@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    environment:
+      - NODE_ENV=production
+      - PORT=3005
+      - HOST=0.0.0.0
+      - DATABASE_URL=${DATABASE_URL}
+      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_URL=${AUTH_URL}
+      - OAUTH_CREDENTIALS=${OAUTH_CREDENTIALS}
+      - PUBLIC_SENTRY_DSN=${PUBLIC_SENTRY_DSN}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+
+    restart: unless-stopped
+    network_mode: host
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
