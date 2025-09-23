@@ -1,7 +1,7 @@
 import { sentryVitePlugin } from '@sentry/vite-plugin';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-import monacoEditorPlugin from 'vite-plugin-monaco-editor';
+import monacoEditorEsmPlugin from 'vite-plugin-monaco-editor-esm'
 export default defineConfig(({ mode }) => ({
 	plugins: [
 		mode === 'production' &&
@@ -11,8 +11,8 @@ export default defineConfig(({ mode }) => ({
 				authToken: process.env.SENTRY_AUTH_TOKEN
 			}),
 		sveltekit(),
-		monacoEditorPlugin({
-			languageWorkers: ['typescript', 'css', 'html', 'json']
+		monacoEditorEsmPlugin({
+			languageWorkers: ['editorWorkerService','typescript', 'css', 'html', 'json']
 		})
 	].filter(Boolean),
 	resolve: { alias: { $lib: '/src/lib' } },
@@ -20,6 +20,6 @@ export default defineConfig(({ mode }) => ({
 		noExternal: ['@sentry/sveltekit']
 	},
 	optimizeDeps: {
-		include: ['@sentry/sveltekit']
+		include: ['@sentry/sveltekit','monaco-editor']
 	}
 }));
