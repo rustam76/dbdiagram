@@ -1,9 +1,7 @@
-# Multi-stage build for SvelteKit application
-
-# ================================
-# 1. Build stage
-# ================================
-FROM node:20.19.2-alpine AS builder
+# ==================================
+# 1. Build stage (Node 20.19.2 full)
+# ==================================
+FROM node:20.19.2 AS builder
 
 # Set working directory
 WORKDIR /app
@@ -11,19 +9,19 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install all dependencies (including dev)
+# Install all dependencies (termasuk devDependencies)
 RUN npm ci --only=production=false
 
 # Copy source code
 COPY . .
 
-# Build the application
-RUN npm run build
+# Build dengan tambahan memory limit (4GB)
+RUN NODE_OPTIONS="--max-old-space-size=4096" npm run build
 
 
-# ================================
-# 2. Production stage
-# ================================
+# ==================================
+# 2. Production stage (Node 20.19.2-alpine)
+# ==================================
 FROM node:20.19.2-alpine AS production
 
 # Install dumb-init for proper signal handling
@@ -39,14 +37,12 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Disable husky (git hooks not needed in production)
+# Disable husky & install hanya production dependencies
 ENV HUSKY=0
-
-# Install only production dependencies (skip postinstall/prepare)
 RUN npm ci --only=production --ignore-scripts \
     && npm cache clean --force
 
-# Copy built application from builder stage
+# Copy built application dari builder
 COPY --from=builder --chown=sveltekit:nodejs /app/build ./build
 COPY --from=builder --chown=sveltekit:nodejs /app/package.json ./package.json
 COPY --from=builder --chown=sveltekit:nodejs /app/migrations ./migrations
