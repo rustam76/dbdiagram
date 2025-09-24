@@ -2,7 +2,7 @@
 	import { initUserContext } from '$lib/store';
 	import Confirm from '$lib/components/confirm/Confirm.svelte';
 	import '../app.css';
-	import 'pollen-css';
+	import 'pollen-css/pollen.css';
 	import type { LayoutData } from './$types';
 	import { MetaTags } from 'svelte-meta-tags';
 	import { page } from '$app/stores';
