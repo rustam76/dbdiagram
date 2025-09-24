@@ -2,6 +2,7 @@ import { sentryVitePlugin } from "@sentry/vite-plugin";
 import { sveltekit } from "@sveltejs/kit/vite";
 import { defineConfig } from "vite";
 import monacoEditorEsmPlugin from "vite-plugin-monaco-editor-esm";
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 export default defineConfig(({ mode }) => ({
   plugins: [
     mode === "production" &&
@@ -19,26 +20,19 @@ export default defineConfig(({ mode }) => ({
       ],
      globalAPI: true
     }),
+    cssInjectedByJsPlugin(),
   ],
   resolve: { alias: { $lib: "/src/lib" } },
   ssr: {
     noExternal: ["@sentry/sveltekit"],
   },
+  optimizeDeps: {
+    include: ['monaco-editor', 'pollen-css']
+  },
  build: {
     rollupOptions: {
       external: [/\.css$/]
     }
-  },
-  build: {
-    rollupOptions: {
-      external: (id) => {
-        // Exclude Monaco Editor CSS files from the build
-        if (id.includes('monaco-editor') && id.endsWith('.css')) {
-          return true;
-        }
-        return false;
-      },
-    },
   },
   css: {
     postcss: "./postcss.config.cjs",
