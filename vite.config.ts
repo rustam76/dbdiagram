@@ -15,18 +15,19 @@ export default defineConfig(({ mode }) => ({
       languageWorkers: [
         "editorWorkerService",
         "typescript",
-        "css",
-        "html",
         "json",
       ],
+     globalAPI: true
     }),
-  ].filter(Boolean),
+  ],
   resolve: { alias: { $lib: "/src/lib" } },
   ssr: {
     noExternal: ["@sentry/sveltekit"],
   },
-  optimizeDeps: {
-    include: ["@sentry/sveltekit", "monaco-editor"],
+ build: {
+    rollupOptions: {
+      external: [/\.css$/]
+    }
   },
   build: {
     rollupOptions: {
