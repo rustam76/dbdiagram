@@ -28,6 +28,17 @@ export default defineConfig(({ mode }) => ({
   optimizeDeps: {
     include: ["@sentry/sveltekit", "monaco-editor"],
   },
+  build: {
+    rollupOptions: {
+      external: (id) => {
+        // Exclude Monaco Editor CSS files from the build
+        if (id.includes('monaco-editor') && id.endsWith('.css')) {
+          return true;
+        }
+        return false;
+      },
+    },
+  },
   css: {
     postcss: "./postcss.config.cjs",
   },
