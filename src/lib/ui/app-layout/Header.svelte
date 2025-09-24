@@ -19,7 +19,7 @@
 	</div>
 </header>
 
-<style>
+<style  lang="css">
 	header {
 		background-color: #1a1a1a;
 		position: fixed;

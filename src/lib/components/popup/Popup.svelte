@@ -60,7 +60,7 @@
 	</Portal>
 {/if}
 
-<style>
+<style lang="css">
 	.popup {
 		@apply w-fit shrink-0 grow-0 h-fit relative rounded block bg-[#373C44];
 	}

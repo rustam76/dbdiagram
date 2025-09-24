@@ -30,7 +30,7 @@
 	</button>
 </div>
 
-<style>
+<style  lang="css">
 	.login-button {
 		height: 60px;
 		width: 300px;

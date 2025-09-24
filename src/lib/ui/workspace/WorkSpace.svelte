@@ -63,7 +63,7 @@
 	</div>
 </main>
 
-<style>
+<style  lang="css">
 	main {
 		@apply flex;
 		height: calc(100vh - 52px);

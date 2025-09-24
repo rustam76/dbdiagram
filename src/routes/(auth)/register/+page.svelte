@@ -153,7 +153,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="css">
 	.container {
 		flex-direction: column;
 		display: flex;

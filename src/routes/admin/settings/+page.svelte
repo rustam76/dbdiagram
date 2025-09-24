@@ -113,7 +113,7 @@
 	</div>
 </div>
 
-<style>
+<style  lang="css">
 	.settings-page {
 		max-width: 1000px;
 	}

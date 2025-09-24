@@ -86,7 +86,7 @@
 	</Portal>
 {/if}
 
-<style>
+<style lang="css">
 	.dropdown-content {
 		@apply inline-block absolute z-50;
 		--s: 10px;

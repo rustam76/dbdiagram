@@ -28,5 +28,5 @@
 	</table>
 </div>
 
-<style>
+<style lang="css">
 </style>

@@ -15,7 +15,7 @@
 
 <Widget widget={Diagram({ project, subscribe })} width="100%" height="100%" />
 
-<style>
+<style  lang="css">
 	:global(svg text) {
 		user-select: none;
 	}

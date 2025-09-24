@@ -78,7 +78,7 @@
 	<div class="bg-[#1C2128] flex flex-row justify-center p-[10px_0_10px_2.3px] w-full"></div>
 </footer>
 
-<style>
+<style  lang="css">
 	.constraints {
 		width: 100%;
 		margin-inline: auto;

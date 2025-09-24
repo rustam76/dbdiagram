@@ -38,7 +38,7 @@
 	{/snippet}
 </Dropdown>
 
-<style>
+<style  lang="css">
 	.item {
 		@apply h-[40px] flex items-center  text-sm w-full pl-3 rounded-sm;
 	}

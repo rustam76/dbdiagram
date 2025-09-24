@@ -97,7 +97,7 @@
 	{/if}
 </div>
 
-<style>
+<style lang="css">
 	.editor {
 		height: 100%;
 	}

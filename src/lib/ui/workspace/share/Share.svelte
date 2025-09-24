@@ -221,7 +221,7 @@
 	{/if}
 </div>
 
-<style>
+<style  lang="css">
 	.members {
 		@apply flex flex-col gap-[18px] mt-7 max-h-[320px] overflow-auto;
 		/* 스크롤바 커스텀 스타일 */

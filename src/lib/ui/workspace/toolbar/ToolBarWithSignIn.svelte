@@ -64,7 +64,7 @@
 	<Share />
 </Popup>
 
-<style>
+<style  lang="css">
 	header {
 		@apply shrink-0 flex items-center h-[52px] bg-[#1c2128] px-2 gap-1.5;
 	}

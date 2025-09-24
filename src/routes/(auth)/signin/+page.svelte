@@ -121,7 +121,7 @@
 	</div>
 {/if}
 
-<style>
+<style lang="css">
 	.container {
 		flex-direction: column;
 		display: flex;

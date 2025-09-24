@@ -247,7 +247,7 @@
 	</section>
 </div>
 
-<style>
+<style  lang="css">
 	.img-placeholder {
 		@apply border-gray-500 border;
 	}

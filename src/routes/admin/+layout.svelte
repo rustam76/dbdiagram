@@ -31,7 +31,7 @@
 	</main>
 </div>
 
-<style>
+<style  lang="css">
 	.admin-layout {
 		min-height: 100vh;
 		background-color: #f8f9fa;

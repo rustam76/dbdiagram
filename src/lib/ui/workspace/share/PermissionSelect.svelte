@@ -131,7 +131,7 @@
 	{/snippet}
 </Dropdown>
 
-<style>
+<style  lang="css">
 	.disabled {
 		@apply cursor-not-allowed;
 	}

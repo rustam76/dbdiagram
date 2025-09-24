@@ -21,7 +21,7 @@
 	</div>
 </div>
 
-<style>
+<style lang="css">
 	.layout {
 		--content-width: 1200px;
 		--content-padding: 16px;

@@ -36,7 +36,7 @@
 	</div>
 </div>
 
-<style>
+<style  lang="css">
 	.dashboard h2 {
 		margin-bottom: 2rem;
 		color: #343a40;

@@ -31,7 +31,7 @@
 	<WorkSpace />
 </div>
 
-<style>
+<style  lang="css">
 	.overlay {
 		@apply bg-white opacity-50 fixed inset-0 flex flex-col;
 	}
